@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->string('company', 50);
+            $table->string('position', 50);
+            $table->dateTime('interview_date');
+            $table->string('interview_result', 5);
+            $table->integer('interview_difficulty');
+            $table->text('description');
             $table->timestamps();
         });
     }

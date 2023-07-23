@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('discussion_tags', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('discussion_id')->constrained();
+            $table->foreignId('tag_id')->constrained();
             $table->timestamps();
         });
     }
