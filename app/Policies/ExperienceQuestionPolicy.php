@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\InterviewQuestionAndAnswers;
+use App\Models\ExperienceQuestion;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class InterviewQuestionAndAnswersPolicy
+class ExperienceQuestionPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class InterviewQuestionAndAnswersPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\InterviewQuestionAndAnswers  $interviewQuestionAndAnswers
+     * @param  \App\Models\ExperienceQuestion  $experienceQuestion
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, InterviewQuestionAndAnswers $interviewQuestionAndAnswers)
+    public function view(User $user, ExperienceQuestion $experienceQuestion)
     {
         //
     }
@@ -48,10 +48,10 @@ class InterviewQuestionAndAnswersPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\InterviewQuestionAndAnswers  $interviewQuestionAndAnswers
+     * @param  \App\Models\ExperienceQuestion  $experienceQuestion
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, InterviewQuestionAndAnswers $interviewQuestionAndAnswers)
+    public function update(User $user, ExperienceQuestion $experienceQuestion)
     {
         //
     }
@@ -60,10 +60,10 @@ class InterviewQuestionAndAnswersPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\InterviewQuestionAndAnswers  $interviewQuestionAndAnswers
+     * @param  \App\Models\ExperienceQuestion  $experienceQuestion
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, InterviewQuestionAndAnswers $interviewQuestionAndAnswers)
+    public function delete(User $user, ExperienceQuestion $experienceQuestion)
     {
         //
     }
@@ -72,10 +72,10 @@ class InterviewQuestionAndAnswersPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\InterviewQuestionAndAnswers  $interviewQuestionAndAnswers
+     * @param  \App\Models\ExperienceQuestion  $experienceQuestion
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, InterviewQuestionAndAnswers $interviewQuestionAndAnswers)
+    public function restore(User $user, ExperienceQuestion $experienceQuestion)
     {
         //
     }
@@ -84,10 +84,10 @@ class InterviewQuestionAndAnswersPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\InterviewQuestionAndAnswers  $interviewQuestionAndAnswers
+     * @param  \App\Models\ExperienceQuestion  $experienceQuestion
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, InterviewQuestionAndAnswers $interviewQuestionAndAnswers)
+    public function forceDelete(User $user, ExperienceQuestion $experienceQuestion)
     {
         //
     }
