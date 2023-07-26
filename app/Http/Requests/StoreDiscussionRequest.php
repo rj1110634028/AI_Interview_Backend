@@ -13,7 +13,7 @@ class StoreDiscussionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreDiscussionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "title" => 'required',
+            "content" => 'required',
+            "category_id" => 'required|exists:categories,id',
+            "tags" => 'nullable|array'
         ];
     }
 }
