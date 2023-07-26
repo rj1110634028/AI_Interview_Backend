@@ -20,12 +20,14 @@ class DiscussionController extends Controller
      */
     public function index()
     {
-        $discussion = Discussion::with(['user:id,name,sex', 'category:id,name', 'tags:id,name'])->get()->map(function ($item) {
-            $tags = $item['tags']->map(function ($item) {
-                return $item->name;
-            });
-            unset($item['tags']);
+        $discussion = Discussion::all()->map(function ($item) {
+            $item['poster_name'] = $item->user->name;
+            $item['poster_sex'] = $item->user->sex;
+            $tags = $item->tags->map(fn ($item) => $item->name );
+            $category = $item->category->name;
+            unset($item['tags'],$item['user'],$item['category']);
             $item['tags'] = $tags;
+            $item['category'] = $category;
             return Arr::except($item, ['user_id', 'category_id']);
         });
         return response()->json($discussion);
@@ -33,7 +35,7 @@ class DiscussionController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * TODO get user id in token
      * @param  \App\Http\Requests\StoreDiscussionRequest  $request
      * @return \Illuminate\Http\Response
      */
@@ -89,7 +91,30 @@ class DiscussionController extends Controller
      */
     public function update(UpdateDiscussionRequest $request, Discussion $discussion)
     {
-        //
+        $data = $request->validated();
+        if (array_key_exists('category_id', $data)) {
+            $category = User::find($data['category_id']);
+            $discussion->category()->associate($category);
+        }
+        if (array_key_exists('title', $data))
+            $discussion->title = $data['title'];
+        if (array_key_exists('content', $data))
+            $discussion->content = $data['content'];
+        $discussion->save();
+
+        if (array_key_exists('content', $data)) {
+            foreach ($data['tags'] as &$item) {
+                $item = Tag::firstOrCreate(['name' => $item])->id;
+            }
+            $discussion->tags()->sync($data['tags']);
+        }
+        $discussion['poster_name'] = $discussion->user->name;
+        $discussion['poster_sex'] = $discussion->user->sex;
+        $discussion['category'] = $discussion->category->name;
+        $discussion['tags'] = $discussion->tags()->get()->map(function ($item) {
+            return $item->name;
+        });
+        return response()->json($discussion);
     }
 
     /**
