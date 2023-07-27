@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('discussions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('category_id')->constrained();
             $table->string('title', 50);
             $table->text('content');

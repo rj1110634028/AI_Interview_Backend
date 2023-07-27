@@ -8,6 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Tag extends Model
 {
     use HasFactory;
-    
+
+    protected $hidden = [
+        'pivot',
+        'created_at',
+        'updated_at',
+    ];
+
     protected $guarded = [];
+
+    function discussionTags()
+    {
+        return $this->hasMany(DiscussionTag::class);
+    }
+
+    function discussions()
+    {
+        return $this->belongsToMany(Discussion::class, 'discussion_tags');
+    }
 }

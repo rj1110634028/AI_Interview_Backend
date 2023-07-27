@@ -9,5 +9,14 @@ class User extends Model
 {
     use HasFactory;
 
+    protected $hidden = [
+        'password'
+    ];
+
     protected $guarded = [];
+
+    function discussions()
+    {
+        return $this->hasMany(Discussion::class);
+    }
 }
