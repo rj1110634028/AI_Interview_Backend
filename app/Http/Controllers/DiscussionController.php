@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DestroyDiscussionRequest;
 use App\Models\Discussion;
 use App\Http\Requests\StoreDiscussionRequest;
 use App\Http\Requests\UpdateDiscussionRequest;
@@ -21,14 +22,14 @@ class DiscussionController extends Controller
     public function index()
     {
         $discussion = Discussion::all()->map(function ($item) {
-            $item['poster_name'] = $item->user->name;
-            $item['poster_sex'] = $item->user->sex;
-            $tags = $item->tags->map(fn ($item) => $item->name );
-            $category = $item->category->name;
-            unset($item['tags'],$item['user'],$item['category']);
-            $item['tags'] = $tags;
-            $item['category'] = $category;
-            return Arr::except($item, ['user_id', 'category_id']);
+            $result=$item->toArray();
+            $result['poster_name'] = $item->user->name;
+            $result['poster_sex'] = $item->user->sex;
+            $result['category'] = $item->category->name;
+            $result['tags'] = $item->tags()->get()->map(function ($item) {
+                return $item->name;
+            });
+            return $result;
         });
         return response()->json($discussion);
     }
@@ -57,12 +58,14 @@ class DiscussionController extends Controller
             $discussionTag->tag()->associate($tag);
             $discussionTag->save();
         }
-        $discussion['user'] = $discussion->user()->get(['id', 'name', 'sex']);
-        $discussion['category'] = $discussion->category()->get(['id', 'name']);
-        $discussion['tags'] = $discussion->tags()->get()->map(function ($item) {
+        $result=$discussion->toArray();
+        $result['poster_name'] = $discussion->user->name;
+        $result['poster_sex'] = $discussion->user->sex;
+        $result['category'] = $discussion->category->name;
+        $result['tags'] = $discussion->tags()->get()->map(function ($item) {
             return $item->name;
         });
-        return response()->json($discussion);
+        return response()->json(Arr::except($result,['user']));
     }
 
     /**
@@ -73,13 +76,14 @@ class DiscussionController extends Controller
      */
     public function show(Discussion $discussion)
     {
-        $discussion['poster_name'] = $discussion->user->name;
-        $discussion['poster_sex'] = $discussion->user->sex;
-        $discussion['category'] = $discussion->category->name;
-        $discussion['tags'] = $discussion->tags()->get()->map(function ($item) {
+        $result=$discussion->toArray();
+        $result['poster_name'] = $discussion->user->name;
+        $result['poster_sex'] = $discussion->user->sex;
+        $result['category'] = $discussion->category->name;
+        $result['tags'] = $discussion->tags()->get()->map(function ($item) {
             return $item->name;
         });
-        return response()->json($discussion);
+        return response()->json($result);
     }
 
     /**
@@ -108,23 +112,27 @@ class DiscussionController extends Controller
             }
             $discussion->tags()->sync($data['tags']);
         }
-        $discussion['poster_name'] = $discussion->user->name;
-        $discussion['poster_sex'] = $discussion->user->sex;
-        $discussion['category'] = $discussion->category->name;
-        $discussion['tags'] = $discussion->tags()->get()->map(function ($item) {
+        $result=$discussion->toArray();
+        $result['poster_name'] = $discussion->user->name;
+        $result['poster_sex'] = $discussion->user->sex;
+        $result['category'] = $discussion->category->name;
+        $result['tags'] = $discussion->tags()->get()->map(function ($item) {
             return $item->name;
         });
-        return response()->json($discussion);
+        return response()->json(Arr::except($result,['user']));
     }
 
     /**
      * Remove the specified resource from storage.
-     *
+     * TODO get user id in token
      * @param  \App\Models\Discussion  $discussion
      * @return \Illuminate\Http\Response
      */
     public function destroy(Discussion $discussion)
     {
-        //
+        if($discussion->user_id !== 1)
+            return response()->json(['message'=>'Forbidden'],403);
+        $discussion->delete();
+        return response()->json(['message'=>'success']);
     }
 }
