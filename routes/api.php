@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DiscussionController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +14,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('auth/login', 'login');
+    Route::post('auth/register', 'register');
+    Route::get('auth/logout', 'logout');
+    Route::get('auth/refresh', 'refresh');
+    Route::get('auth/profile', 'profile');
+});
 
 Route::resource('discussion', DiscussionController::class);
