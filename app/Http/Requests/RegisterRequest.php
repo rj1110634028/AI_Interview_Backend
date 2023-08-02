@@ -26,7 +26,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:20'],
-            'sex' => ['required', 'string', Rule::in(['F', 'M'])],
+            'sex' => ['nullable', 'string', Rule::in(['F', 'M', null])],
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/'],
         ];
