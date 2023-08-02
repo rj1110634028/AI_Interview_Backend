@@ -32,7 +32,12 @@ class AuthController extends Controller
             return response()->json(['message' => '登入失敗'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return response()->json([
+            'user_id'=>auth()->user()->id,
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
     }
 
     /**
@@ -47,7 +52,7 @@ class AuthController extends Controller
             $data,
             ['password' => Hash::make($data['password'])]
         ));
-        return response()->json($user, 200);
+        return response()->json(['message' => '註冊成功'], 200);
     }
 
     /**
