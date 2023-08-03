@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DiscussionController;
+use App\Http\Middleware\AuthUser;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,4 +24,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('auth/profile', 'profile');
 });
 
-Route::resource('discussion', DiscussionController::class);
+Route::middleware(AuthUser::class)->group(function () {
+    Route::resource('discussion', DiscussionController::class);
+});
+Route::controller(DiscussionController::class)->group(function () {
+    Route::get('discussion', 'index');
+    Route::get('discussion/{discussion}', 'show');
+});
+
