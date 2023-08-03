@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DiscussionController;
-use Illuminate\Http\Request;
+use App\Http\Middleware\AuthUser;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('discussion', DiscussionController::class);
+Route::controller(AuthController::class)->group(function () {
+    Route::post('auth/login', 'login');
+    Route::post('auth/register', 'register');
+    Route::get('auth/logout', 'logout');
+    Route::get('auth/refresh', 'refresh');
+    Route::get('auth/profile', 'profile');
+});
+
+Route::middleware(AuthUser::class)->group(function () {
+    Route::resource('discussion', DiscussionController::class);
+});
+Route::controller(DiscussionController::class)->group(function () {
+    Route::get('discussion', 'index');
+    Route::get('discussion/{discussion}', 'show');
+});
+
