@@ -18,9 +18,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('company', 50);
             $table->string('position', 50);
-            $table->dateTime('interview_date');
-            $table->string('interview_result', 5);
-            $table->integer('interview_difficulty');
+            $table->date('date');
+            $table->string('result', 5);
+            $table->integer('difficulty');
             $table->text('description');
             $table->timestamps();
         });
