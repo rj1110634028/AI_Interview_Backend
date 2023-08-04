@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Middleware\AuthUser;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,10 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('auth/logout', 'logout');
     Route::get('auth/refresh', 'refresh');
     Route::get('auth/profile', 'profile');
+});
+
+Route::middleware(AuthUser::class)->group(function () {
+    Route::resource('category', CategoryController::class);
 });
 
 Route::middleware(AuthUser::class)->group(function () {
