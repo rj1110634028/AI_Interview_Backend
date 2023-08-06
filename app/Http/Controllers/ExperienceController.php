@@ -20,8 +20,7 @@ class ExperienceController extends Controller
             $result = $item->toArray();
             $result['poster_name'] = $item->user->name;
             $result['poster_sex'] = $item->user->sex;
-            $result['question'] = $item->question()->get()->map(fn($item)=>$item->question);
-            $result['answer'] = $item->question()->get()->map(fn($item)=>$item->answer);
+            $result['questions'] = $item->question()->get(['question', 'answer']);
             unset($result['user']);
             return $result;
         });
@@ -47,14 +46,13 @@ class ExperienceController extends Controller
         $experience['difficulty'] = $data["difficulty"];
         $experience['description'] = $data["description"];
         $experience->save();
-        foreach ($data['question'] as $key => $value) {
-            $experience->question()->create(['question' => $value, 'answer' => $data['answer'][$key]]);
+        foreach ($data['questions'] as $item) {
+            $experience->question()->create(['question' => $item['question'], 'answer' => $item['answer']]);
         }
         $result = $experience->toArray();
         $result['poster_name'] = $experience->user->name;
         $result['poster_sex'] = $experience->user->sex;
-        $result['question'] = $experience->question()->get()->map(fn($item)=>$item->question);
-        $result['answer'] = $experience->question()->get()->map(fn($item)=>$item->answer);
+        $result['questions'] = $experience->question()->get(['question', 'answer']);
         unset($result['user']);
         return response()->json($result);
     }
@@ -70,8 +68,7 @@ class ExperienceController extends Controller
         $result = $experience->toArray();
         $result['poster_name'] = $experience->user->name;
         $result['poster_sex'] = $experience->user->sex;
-        $result['question'] = $experience->question()->get()->map(fn($item)=>$item->question);
-        $result['answer'] = $experience->question()->get()->map(fn($item)=>$item->answer);
+        $result['questions'] = $experience->question()->get(['question', 'answer']);
         unset($result['user']);
         return response()->json($result);
     }
@@ -85,7 +82,24 @@ class ExperienceController extends Controller
      */
     public function update(UpdateExperienceRequest $request, Experience $experience)
     {
-        //
+        $data = $request->validated();
+        $experience['company'] = $data["company"];
+        $experience['position'] = $data["position"];
+        $experience['date'] = $data["date"];
+        $experience['result'] = $data["result"];
+        $experience['difficulty'] = $data["difficulty"];
+        $experience['description'] = $data["description"];
+        $experience->save();
+        $experience->question()->delete();
+        foreach ($data['questions'] as $item) {
+            $experience->question()->create(['question' => $item['question'], 'answer' => $item['answer']]);
+        }
+        $result = $experience->toArray();
+        $result['poster_name'] = $experience->user->name;
+        $result['poster_sex'] = $experience->user->sex;
+        $result['questions'] = $experience->question()->get(['question', 'answer']);
+        unset($result['user']);
+        return response()->json($result);
     }
 
     /**
