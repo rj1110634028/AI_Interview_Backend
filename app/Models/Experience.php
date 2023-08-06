@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Experience extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    function question()
+    {
+        return $this->hasMany(ExperienceQuestion::class);
+    }
 }

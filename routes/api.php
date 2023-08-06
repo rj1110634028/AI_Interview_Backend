@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscussionController;
+use App\Http\Controllers\ExperienceController;
 use App\Http\Middleware\AuthUser;
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +38,10 @@ Route::controller(DiscussionController::class)->group(function () {
     Route::get('discussion/{discussion}', 'show');
 });
 
+Route::middleware(AuthUser::class)->group(function () {
+    Route::resource('experience', ExperienceController::class);
+});
+Route::controller(ExperienceController::class)->group(function () {
+    Route::get('experience', 'index');
+    Route::get('experience/{experience}', 'show');
+});
