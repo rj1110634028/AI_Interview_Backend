@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('experience_questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('experience_id')->constrained();
+            $table->foreignId('experience_id')->constrained()->cascadeOnDelete();
             $table->text('question');
             $table->text('answer')->nullable();
             $table->timestamps();

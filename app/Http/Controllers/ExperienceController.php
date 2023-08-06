@@ -96,6 +96,9 @@ class ExperienceController extends Controller
      */
     public function destroy(Experience $experience)
     {
-        //
+        if ($experience->user_id !== auth()->user()->id)
+            return response()->json(['message' => 'Forbidden'], 403);
+        $experience->delete();
+        return response()->json(['message' => 'success']);
     }
 }
