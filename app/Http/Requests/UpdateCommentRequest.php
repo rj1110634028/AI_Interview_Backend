@@ -13,7 +13,7 @@ class UpdateCommentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->route('comment')->user_id === auth()->user()->id;
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "comment" => ['required', 'string']
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Middleware\AuthUser;
@@ -44,4 +45,14 @@ Route::middleware(AuthUser::class)->group(function () {
 Route::controller(ExperienceController::class)->group(function () {
     Route::get('experience', 'index');
     Route::get('experience/{experience}', 'show');
+});
+
+Route::controller(CommentController::class)->group(function () {
+    Route::middleware(AuthUser::class)->group(function () {
+        Route::post('discussion/{discussion}/comment', 'store');
+        Route::put('comment/{comment}', 'update');
+        Route::patch('comment/{comment}', 'update');
+        Route::delete('comment/{comment}', 'destroy');
+    });
+    Route::get('discussion/{discussion}/comment', 'show');
 });
