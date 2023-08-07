@@ -37,7 +37,7 @@ class DiscussionController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * TODO get user id in token
+     * 
      * @param  \App\Http\Requests\StoreDiscussionRequest  $request
      * @return \Illuminate\Http\Response
      */
@@ -126,7 +126,7 @@ class DiscussionController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * TODO get user id in token
+     * 
      * @param  \App\Models\Discussion  $discussion
      * @return \Illuminate\Http\Response
      */

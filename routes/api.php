@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Middleware\AuthUser;
 use Illuminate\Support\Facades\Route;
@@ -32,3 +33,12 @@ Route::controller(DiscussionController::class)->group(function () {
     Route::get('discussion/{discussion}', 'show');
 });
 
+Route::controller(CommentController::class)->group(function () {
+    Route::middleware(AuthUser::class)->group(function () {
+        Route::post('discussion/{discussion}/comment', 'store');
+        Route::put('comment/{comment}', 'update');
+        Route::patch('comment/{comment}', 'update');
+        Route::delete('comment/{comment}', 'destroy');
+    });
+    Route::get('discussion/{discussion}/comment', 'show');
+});

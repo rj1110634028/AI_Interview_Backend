@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use App\Models\Discussion;
 
 class CommentController extends Controller
 {
@@ -24,9 +25,16 @@ class CommentController extends Controller
      * @param  \App\Http\Requests\StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request, Discussion $discussion)
     {
-        //
+        $data = $request->validated();
+        $comment = $discussion->comments()->create(array_merge(
+            $data,
+            ['user_id' => auth()->user()->id]
+        ));
+        if ($comment !== null)
+            return response()->json(['message' => 'seccuss']);
+        return response()->json(['message' => 'server error'], 500);
     }
 
     /**
@@ -35,9 +43,15 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show(Discussion $discussion)
     {
-        //
+        $result = $discussion->comments()->get()->map(function ($item) {
+            $item['poster_name'] = $item->user->name;
+            $item['poster_sex'] = $item->user->sex;
+            unset($item['user']);
+            return $item;
+        });
+        return response()->json($result);
     }
 
     /**
@@ -49,7 +63,11 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        //
+        $data = $request->validated();
+        $comment->update($data);
+        if ($comment !== null)
+            return response()->json(['message' => 'seccuss']);
+        return response()->json(['message' => 'server error'], 500);
     }
 
     /**
@@ -60,6 +78,9 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        if ($comment->user_id !== auth()->user()->id)
+            return response()->json(['message' => 'Forbidden'], 403);
+        $comment->delete();
+        return response()->json(['message' => 'seccuss']);
     }
 }

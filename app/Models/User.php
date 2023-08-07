@@ -23,6 +23,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Discussion::class);
     }
 
+    function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
