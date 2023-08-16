@@ -56,3 +56,4 @@ Route::controller(CommentController::class)->group(function () {
     });
     Route::get('discussion/{discussion}/comment', 'show');
 });
+
