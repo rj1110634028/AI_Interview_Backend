@@ -29,11 +29,11 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['message' => '登入失敗'], 401);
+            return response()->json(['message' => '登入失敗'], 422);
         }
 
         return response()->json([
-            'user_id'=>auth()->user()->id,
+            'user_id' => auth()->user()->id,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
@@ -52,6 +52,8 @@ class AuthController extends Controller
             $data,
             ['password' => Hash::make($data['password'])]
         ));
+        if ($user)
+            return response()->json(['message' => '註冊失敗'], 422);
         return response()->json(['message' => '註冊成功'], 200);
     }
 

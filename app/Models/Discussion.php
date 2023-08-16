@@ -17,18 +17,24 @@ class Discussion extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    function discussionTags(){
+    function discussionTags()
+    {
         return $this->hasMany(DiscussionTag::class);
     }
-    
+
     function tags()
     {
         return $this->belongsToMany(Tag::class, 'discussion_tags');
+    }
+
+    function comments()
+    {
+        return $this->morphMany(Comment::class, 'article');
     }
 }
