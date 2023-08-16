@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Discussion extends Model
 {
@@ -36,5 +37,15 @@ class Discussion extends Model
     function comments()
     {
         return $this->morphMany(Comment::class, 'article');
+    }
+
+    function userFavorites()
+    {
+        Relation::morphMap([
+            'discussion'=>'App\Models\Discussion',
+            'experience'=>'App\Models\Experience',
+        ]);
+
+        return $this->morphToMany(User::class, 'article', 'favorites');
     }
 }
