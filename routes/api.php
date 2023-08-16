@@ -49,10 +49,10 @@ Route::controller(ExperienceController::class)->group(function () {
 
 Route::controller(CommentController::class)->group(function () {
     Route::middleware(AuthUser::class)->group(function () {
-        Route::post('discussion/{discussion}/comment', 'store');
+        Route::post('{type}/{id}/comment', 'store');
         Route::put('comment/{comment}', 'update');
         Route::patch('comment/{comment}', 'update');
         Route::delete('comment/{comment}', 'destroy');
     });
-    Route::get('discussion/{discussion}/comment', 'show');
+    Route::get('{type}/{id}/comment', 'index');
 });

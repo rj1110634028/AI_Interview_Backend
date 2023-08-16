@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Discussion;
+use App\Models\Experience;
 
 class CommentController extends Controller
 {
@@ -14,9 +15,16 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($article_type, $article_id)
     {
-        //
+        $article = ucfirst('App\\Models\\'.$article_type)::find($article_id);
+        $result = $article->comments()->get()->map(function ($item) {
+            $item['poster_name'] = $item->user->name;
+            $item['poster_sex'] = $item->user->sex;
+            unset($item['user']);
+            return $item;
+        });
+        return response()->json($result);
     }
 
     /**
@@ -25,10 +33,11 @@ class CommentController extends Controller
      * @param  \App\Http\Requests\StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request, Discussion $discussion)
+    public function store(StoreCommentRequest $request, $article_type, $article_id)
     {
         $data = $request->validated();
-        $comment = $discussion->comments()->create(array_merge(
+        $article = ucfirst('App\\Models\\'.$article_type)::find($article_id);
+        $comment = $article->comments()->create(array_merge(
             $data,
             ['user_id' => auth()->user()->id]
         ));
@@ -43,15 +52,9 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Discussion $discussion)
+    public function show(Comment $comment)
     {
-        $result = $discussion->comments()->get()->map(function ($item) {
-            $item['poster_name'] = $item->user->name;
-            $item['poster_sex'] = $item->user->sex;
-            unset($item['user']);
-            return $item;
-        });
-        return response()->json($result);
+        //
     }
 
     /**
