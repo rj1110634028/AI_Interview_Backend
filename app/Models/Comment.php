@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Comment extends Model
 {
@@ -21,8 +22,13 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    function discussion()
+    function article()
     {
+        Relation::morphMap([
+            'discussion'=>'App\Models\Discussion',
+            'experience'=>'App\Models\Experience',
+        ]);
+
         return $this->morphTo();
     }
 }
