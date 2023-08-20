@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -31,6 +32,31 @@ class User extends Authenticatable implements JWTSubject
     function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    
+    function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+    
+    function favoriteDiscussions()
+    {
+        Relation::morphMap([
+            'discussion'=>'App\Models\Discussion',
+            'experience'=>'App\Models\Experience',
+        ]);
+
+        return $this->morphedByMany(Discussion::class, 'article', 'favorites');
+    }
+    
+    function favoriteExperiences()
+    {
+        Relation::morphMap([
+            'discussion'=>'App\Models\Discussion',
+            'experience'=>'App\Models\Experience',
+        ]);
+
+        return $this->morphedByMany(Experience::class, 'article', 'favorites');
     }
 
     /**

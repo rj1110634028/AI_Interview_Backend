@@ -21,16 +21,24 @@ class Experience extends Model
     {
         return $this->hasMany(ExperienceQuestion::class);
     }
-    
 
     function comments()
     {
         Relation::morphMap([
-            'discussion'=>'App\Models\Discussion',
-            'experience'=>'App\Models\Experience',
+            'discussion' => 'App\Models\Discussion',
+            'experience' => 'App\Models\Experience',
         ]);
 
         return $this->morphMany(Comment::class, 'article');
     }
 
+    function userFavorites()
+    {
+        Relation::morphMap([
+            'discussion' => 'App\Models\Discussion',
+            'experience' => 'App\Models\Experience',
+        ]);
+
+        return $this->morphToMany(User::class, 'article', 'favorites');
+    }
 }

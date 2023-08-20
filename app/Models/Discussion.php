@@ -43,4 +43,14 @@ class Discussion extends Model
 
         return $this->morphMany(Comment::class, 'article');
     }
+
+    function userFavorites()
+    {
+        Relation::morphMap([
+            'discussion'=>'App\Models\Discussion',
+            'experience'=>'App\Models\Experience',
+        ]);
+
+        return $this->morphToMany(User::class, 'article', 'favorites');
+    }
 }
