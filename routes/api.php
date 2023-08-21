@@ -26,6 +26,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('auth/logout', 'logout');
     Route::get('auth/refresh', 'refresh');
     Route::get('auth/profile', 'profile');
+    Route::patch('auth/profile', 'update');
 });
 
 Route::middleware(AuthUser::class)->group(function () {

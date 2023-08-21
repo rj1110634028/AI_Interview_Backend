@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -65,6 +66,21 @@ class AuthController extends Controller
     public function profile()
     {
         return response()->json(auth()->user());
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UpdateUserRequest  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateUserRequest $request)
+    {
+        $data = $request->validated();
+        $user = User::find(auth()->user()->id);
+        $user->update($data);
+        return response()->json($user);
     }
 
     /**
