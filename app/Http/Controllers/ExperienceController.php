@@ -16,7 +16,7 @@ class ExperienceController extends Controller
      */
     public function index()
     {
-        $experience = Experience::all()->map(function ($item) {
+        $experience = Experience::withCount('comments')->withCount('userFavorites')->get()->map(function ($item) {
             $result = $item->toArray();
             $result['poster_name'] = $item->user->name;
             $result['poster_sex'] = $item->user->sex;

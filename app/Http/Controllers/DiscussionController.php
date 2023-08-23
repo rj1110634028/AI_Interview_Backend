@@ -22,7 +22,7 @@ class DiscussionController extends Controller
      */
     public function index()
     {
-        $discussion = Discussion::all()->map(function ($item) {
+        $discussion = Discussion::withCount('comments')->withCount('userFavorites')->get()->map(function ($item) {
             $result = $item->toArray();
             $result['poster_name'] = $item->user->name;
             $result['poster_sex'] = $item->user->sex;
