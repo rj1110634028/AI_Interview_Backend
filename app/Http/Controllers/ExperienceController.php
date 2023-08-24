@@ -65,7 +65,7 @@ class ExperienceController extends Controller
      */
     public function show(Experience $experience)
     {
-        $result = $experience->toArray();
+        $result = $experience->loadCount('comments')->loadCount('userFavorites')->toArray();
         $result['poster_name'] = $experience->user->name;
         $result['poster_sex'] = $experience->user->sex;
         $result['questions'] = $experience->question()->get(['question', 'answer']);

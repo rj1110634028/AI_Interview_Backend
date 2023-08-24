@@ -77,7 +77,7 @@ class DiscussionController extends Controller
      */
     public function show(Discussion $discussion)
     {
-        $result = $discussion->toArray();
+        $result = $discussion->loadCount('comments')->loadCount('userFavorites')->toArray();
         $result['poster_name'] = $discussion->user->name;
         $result['poster_sex'] = $discussion->user->sex;
         $result['category'] = $discussion->category->name;
