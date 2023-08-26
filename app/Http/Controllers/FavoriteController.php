@@ -37,7 +37,7 @@ class FavoriteController extends Controller
         if ($article == null)
             return response()->json(["message" => "找不到文章"], 404);
         $user = User::find($request->user->id);
-        $article->userFavorites()->save($user);
+        $article->userFavorites()->sync([$user->id]);
         return response()->json(["message" => "新增成功"]);
     }
 
