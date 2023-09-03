@@ -115,4 +115,15 @@ class ExperienceController extends Controller
         $experience->delete();
         return response()->json(['message' => 'success']);
     }
+
+    /**
+     * Show user's own experiences.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function ownExperience()
+    {
+        $experiences = auth()->user()->experiences;
+        return response()->json($experiences);
+    }
 }

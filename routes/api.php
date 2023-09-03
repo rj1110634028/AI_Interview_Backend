@@ -46,10 +46,11 @@ Route::controller(DiscussionController::class)->group(function () {
 });
 
 // Experience
-Route::middleware(AuthUser::class)->group(function () {
-    Route::resource('experience', ExperienceController::class);
-});
 Route::controller(ExperienceController::class)->group(function () {
+    Route::middleware(AuthUser::class)->group(function () {
+        Route::resource('experience', ExperienceController::class);
+        Route::get('auth/experience', 'ownExperience');
+    });
     Route::get('experience', 'index');
     Route::get('experience/{experience}', 'show');
 });
