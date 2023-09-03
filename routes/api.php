@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Auth
 Route::controller(AuthController::class)->group(function () {
     Route::post('auth/login', 'login');
     Route::post('auth/register', 'register');
@@ -29,18 +30,22 @@ Route::controller(AuthController::class)->group(function () {
     Route::patch('auth/profile', 'update');
 });
 
+// Category
 Route::middleware(AuthUser::class)->group(function () {
     Route::resource('category', CategoryController::class);
 });
 
-Route::middleware(AuthUser::class)->group(function () {
-    Route::resource('discussion', DiscussionController::class);
-});
+// Discussion
 Route::controller(DiscussionController::class)->group(function () {
+    Route::middleware(AuthUser::class)->group(function () {
+        Route::resource('discussion', DiscussionController::class);
+        Route::get('auth/discussion', 'ownDiscussion');
+    });
     Route::get('discussion', 'index');
     Route::get('discussion/{discussion}', 'show');
 });
 
+// Experience
 Route::middleware(AuthUser::class)->group(function () {
     Route::resource('experience', ExperienceController::class);
 });
@@ -49,6 +54,7 @@ Route::controller(ExperienceController::class)->group(function () {
     Route::get('experience/{experience}', 'show');
 });
 
+// Comment
 Route::controller(CommentController::class)->group(function () {
     Route::middleware(AuthUser::class)->group(function () {
         Route::post('{type}/{id}/comment', 'store');
@@ -59,6 +65,7 @@ Route::controller(CommentController::class)->group(function () {
     Route::get('{type}/{id}/comment', 'index');
 });
 
+// Favorite
 Route::controller(FavoriteController::class)->group(function () {
     Route::middleware(AuthUser::class)->group(function () {
         Route::post('{type}/{id}/favorite', 'store');

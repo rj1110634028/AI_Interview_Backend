@@ -137,4 +137,15 @@ class DiscussionController extends Controller
         $discussion->delete();
         return response()->json(['message' => 'success']);
     }
+
+    /**
+     * Show user's own discussions.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function ownDiscussion()
+    {
+        $discussions = auth()->user()->discussions;
+        return response()->json($discussions);
+    }
 }
