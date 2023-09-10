@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('resume_id')->constrained();
+            $table->foreignId('resume_id')->constrained()->cascadeOnDelete();
             $table->string('title', 50);
             $table->text('description');
-            $table->string('link', 50);
+            $table->string('link', 50)->nullable();
             $table->timestamps();
         });
     }

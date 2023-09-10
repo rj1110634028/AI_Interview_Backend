@@ -22,10 +22,6 @@ return new class extends Migration
             $table->string("password", 100);
             $table->string("address", 100)->nullable();
             $table->date("birthday")->nullable();
-            $table->string("highest_education", 5)->nullable();
-            $table->string("educational_status", 5)->nullable();
-            $table->string("employment_status", 5)->nullable();
-            $table->string("seniority", 10)->nullable();
             $table->timestamps();
         });
     }
