@@ -6,6 +6,7 @@ use App\Http\Requests\DestroyDiscussionRequest;
 use App\Models\Discussion;
 use App\Http\Requests\StoreDiscussionRequest;
 use App\Http\Requests\UpdateDiscussionRequest;
+use App\Http\Resources\DiscussionResource;
 use App\Models\Category;
 use App\Models\DiscussionTag;
 use App\Models\Tag;
@@ -22,17 +23,8 @@ class DiscussionController extends Controller
      */
     public function index()
     {
-        $discussion = Discussion::withCount('comments')->withCount('userFavorites')->get()->map(function ($item) {
-            $result = $item->toArray();
-            $result['poster_name'] = $item->user->name;
-            $result['poster_sex'] = $item->user->sex;
-            $result['category'] = $item->category->name;
-            $result['tags'] = $item->tags()->get()->map(function ($item) {
-                return $item->name;
-            });
-            return $result;
-        });
-        return response()->json($discussion);
+        $discussions = Discussion::withCount('comments')->withCount('userFavorites')->get();
+        return response()->json(DiscussionResource::collection($discussions));
     }
 
     /**
@@ -59,14 +51,7 @@ class DiscussionController extends Controller
             $discussionTag->tag()->associate($tag);
             $discussionTag->save();
         }
-        $result = $discussion->toArray();
-        $result['poster_name'] = $discussion->user->name;
-        $result['poster_sex'] = $discussion->user->sex;
-        $result['category'] = $discussion->category->name;
-        $result['tags'] = $discussion->tags()->get()->map(function ($item) {
-            return $item->name;
-        });
-        return response()->json(Arr::except($result, ['user']));
+        return response()->json(new DiscussionResource($discussion));
     }
 
     /**
@@ -77,14 +62,7 @@ class DiscussionController extends Controller
      */
     public function show(Discussion $discussion)
     {
-        $result = $discussion->loadCount('comments')->loadCount('userFavorites')->toArray();
-        $result['poster_name'] = $discussion->user->name;
-        $result['poster_sex'] = $discussion->user->sex;
-        $result['category'] = $discussion->category->name;
-        $result['tags'] = $discussion->tags()->get()->map(function ($item) {
-            return $item->name;
-        });
-        return response()->json($result);
+        return response()->json(new DiscussionResource($discussion->loadCount('comments')->loadCount('userFavorites')));
     }
 
     /**
@@ -97,31 +75,14 @@ class DiscussionController extends Controller
     public function update(UpdateDiscussionRequest $request, Discussion $discussion)
     {
         $data = $request->validated();
-        if (array_key_exists('category_id', $data)) {
-            $category = Category::find($data['category_id']);
-            $discussion->category()->associate($category);
-        }
-        if (array_key_exists('title', $data))
-            $discussion->title = $data['title'];
-
-        if (array_key_exists('content', $data))
-            $discussion->content = $data['content'];
-        $discussion->save();
-
+        $discussion->update(Arr::except($data,['tags']));
         if (array_key_exists('tags', $data)) {
             foreach ($data['tags'] as &$item) {
                 $item = Tag::firstOrCreate(['name' => $item])->id;
             }
             $discussion->tags()->sync($data['tags']);
         }
-        $result = $discussion->toArray();
-        $result['poster_name'] = $discussion->user->name;
-        $result['poster_sex'] = $discussion->user->sex;
-        $result['category'] = $discussion->category->name;
-        $result['tags'] = $discussion->tags()->get()->map(function ($item) {
-            return $item->name;
-        });
-        return response()->json(Arr::except($result, ['user']));
+        return response()->json(new DiscussionResource($discussion->loadCount('comments')->loadCount('userFavorites')));
     }
 
     /**
@@ -146,6 +107,6 @@ class DiscussionController extends Controller
     public function ownDiscussion()
     {
         $discussions = auth()->user()->discussions;
-        return response()->json($discussions);
+        return response()->json(new DiscussionResource($discussions->loadCount('comments')->loadCount('userFavorites')));
     }
 }
