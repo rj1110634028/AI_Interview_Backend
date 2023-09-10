@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class WorkExperience extends Model
 {
     use HasFactory;
+
+    protected $hidden = [];
+
+    protected $guarded = [];
+
+    function resumes()
+    {
+        return $this->belongsTo(Resume::class);
+    }
 }

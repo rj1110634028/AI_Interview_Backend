@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Education extends Model
 {
     use HasFactory;
+
+    protected $hidden = [];
+
+    protected $guarded = [];
+
+    function resumes()
+    {
+        return $this->belongsTo(Resume::class);
+    }
+
+    function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }
