@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('work_experiences', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('resume_id')->constrained();
+            $table->string('company', 50);
+            $table->string('position', 50);
+            $table->text('description');
+            $table->date('start_work');
+            $table->date('end_work');
             $table->timestamps();
         });
     }

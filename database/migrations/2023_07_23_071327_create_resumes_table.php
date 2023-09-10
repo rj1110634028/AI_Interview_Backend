@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('resumes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->text('biography'); // 自傳
             $table->timestamps();
         });
     }

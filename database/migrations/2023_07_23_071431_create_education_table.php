@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('education', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('resume_id')->constrained();
+            $table->foreignId('department_id')->constrained();
+            $table->string('school', 50);
+            $table->date('admission_date');
+            $table->date('date_of_graduation');
             $table->timestamps();
         });
     }
