@@ -9,6 +9,7 @@ use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\WorkExperienceController;
 use App\Http\Middleware\AuthUser;
 use Illuminate\Support\Facades\Route;
 
@@ -83,5 +84,9 @@ Route::middleware(AuthUser::class)->group(function () {
     Route::controller(EducationController::class)->group(function () {
         Route::post('education', 'store');
         Route::patch('education/{education}', 'update');
+    });
+    Route::controller(WorkExperienceController::class)->group(function () {
+        Route::post('work-experience', 'store');
+        Route::patch('work-experience/{work_experience}', 'update');
     });
 });

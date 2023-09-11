@@ -13,7 +13,7 @@ class WorkExperience extends Model
 
     protected $guarded = [];
 
-    function resumes()
+    function resume()
     {
         return $this->belongsTo(Resume::class);
     }
