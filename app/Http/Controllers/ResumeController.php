@@ -6,6 +6,7 @@ use App\Models\Resume;
 use App\Http\Requests\StoreResumeRequest;
 use App\Http\Requests\UpdateResumeRequest;
 use App\Http\Resources\ResumeResource;
+use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Support\Arr;
 
@@ -56,7 +57,14 @@ class ResumeController extends Controller
     {
         $data = $request->validated();
         $user = User::find(auth()->id());
-        $resume = Resume::updateOrCreate(['user_id' => $user->id], $data);
+        $resume = Resume::updateOrCreate(['user_id' => $user->id], Arr::except($data, 'skills'));
+        if (key_exists('skills', $data)) {
+            foreach ($data['skills'] as &$value) {
+                $skill = Skill::firstOrCreate(['name' => $value]);
+                $value = $skill->id;
+            }
+            $resume->skills()->sync($data['skills']);
+        }
         return response()->json(new ResumeResource($resume));
     }
 

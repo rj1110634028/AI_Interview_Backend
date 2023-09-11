@@ -27,6 +27,8 @@ class UpdateResumeRequest extends FormRequest
             'educational_status' => ['nullable', 'string'],
             'employment_status' => ['nullable', 'string'],
             'biography' => ['nullable', 'string'],
+            'skills' => ['nullable', 'array'],
+            'skills.*' => ['nullable', 'string'],
         ];
     }
 }

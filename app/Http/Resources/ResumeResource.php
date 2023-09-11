@@ -18,10 +18,10 @@ class ResumeResource extends JsonResource
             'educational_status' => $this->educational_status,
             'employment_status' => $this->employment_status,
             "biography" => $this->biography,
-            "education" => $this->educations,
-            "work_experience" => $this->workExperiences,
-            "portfolio" => $this->portfolios,
-            "skill" => $this->skills,
+            "education" => EducationResource::collection($this->educations),
+            "work_experience" => WorkExperienceResource::collection($this->workExperiences),
+            "portfolio" => PortfolioResource::collection($this->portfolios),
+            "skills" => $this->skills->map(fn ($item) => $item->name),
         ];
     }
 }

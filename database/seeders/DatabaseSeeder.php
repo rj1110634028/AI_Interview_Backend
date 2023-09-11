@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             DiscussionTagSeeder::class,
             DepartmentSeeder::class,
+            SkillSeeder::class,
         ]);
     }
 }
