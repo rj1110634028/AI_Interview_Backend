@@ -12,4 +12,9 @@ class Portfolio extends Model
     protected $hidden = [];
 
     protected $guarded = [];
+    
+    function resume()
+    {
+        return $this->belongsTo(Resume::class);
+    }
 }
