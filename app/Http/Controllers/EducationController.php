@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Education;
 use App\Http\Requests\StoreEducationRequest;
 use App\Http\Requests\UpdateEducationRequest;
+use App\Http\Resources\EducationResource;
+use App\Models\Resume;
 
 class EducationController extends Controller
 {
@@ -26,7 +28,10 @@ class EducationController extends Controller
      */
     public function store(StoreEducationRequest $request)
     {
-        //
+        $data = $request->validated();
+        $resume = Resume::firstOrCreate(['user_id' => auth()->id()]);
+        $education = $resume->educations()->create($data);
+        return response()->json(new EducationResource($education));
     }
 
     /**
@@ -49,7 +54,9 @@ class EducationController extends Controller
      */
     public function update(UpdateEducationRequest $request, Education $education)
     {
-        //
+        $data = $request->validated();
+        $education->update($data);
+        return response()->json(new EducationResource($education));
     }
 
     /**

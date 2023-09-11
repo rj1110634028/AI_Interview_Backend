@@ -13,7 +13,7 @@ class UpdateEducationRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->route('education')->resume->user_id === auth()->user()->id;
     }
 
     /**
@@ -24,7 +24,11 @@ class UpdateEducationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'department_id' => ['nullable', 'integer'],
+            'school' => ['nullable', 'string'],
+            'educational_level' => ['nullable', 'string'],
+            'admission_date' => ['nullable', 'date'],
+            'graduation_date' => ['nullable', 'date'],
         ];
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DiscussionController;
+use App\Http\Controllers\EducationController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PortfolioController;
@@ -69,6 +70,7 @@ Route::controller(FavoriteController::class)->group(function () {
     });
 });
 
+// Resume
 Route::middleware(AuthUser::class)->group(function () {
     Route::controller(ResumeController::class)->group(function () {
         Route::patch('resume', 'update');
@@ -77,5 +79,9 @@ Route::middleware(AuthUser::class)->group(function () {
     Route::controller(PortfolioController::class)->group(function () {
         Route::post('portfolio', 'store');
         Route::patch('portfolio/{portfolio}', 'update');
+    });
+    Route::controller(EducationController::class)->group(function () {
+        Route::post('education', 'store');
+        Route::patch('education/{education}', 'update');
     });
 });

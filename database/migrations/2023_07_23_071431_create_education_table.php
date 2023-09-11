@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('school', 50);
             $table->string('educational_level', 5);
             $table->date('admission_date');
-            $table->date('date_of_graduation')->nullable();
+            $table->date('graduation_date')->nullable();
             $table->timestamps();
         });
     }
