@@ -13,7 +13,7 @@ class UpdateResumeRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateResumeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'educational_status' => ['nullable', 'string'],
+            'employment_status' => ['nullable', 'string'],
+            'biography' => ['nullable', 'string'],
         ];
     }
 }

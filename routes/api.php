@@ -6,6 +6,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ResumeController;
 use App\Http\Middleware\AuthUser;
 use Illuminate\Support\Facades\Route;
 
@@ -65,4 +66,9 @@ Route::controller(FavoriteController::class)->group(function () {
         Route::delete('{type}/{id}/favorite', 'destroy');
         Route::get('favorite', 'index');
     });
+});
+
+Route::middleware(AuthUser::class)->controller(ResumeController::class)->group(function () {
+    Route::patch('resume', 'update');
+    Route::get('resume', 'index');
 });
