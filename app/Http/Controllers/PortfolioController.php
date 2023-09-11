@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Portfolio;
 use App\Http\Requests\StorePortfolioRequest;
 use App\Http\Requests\UpdatePortfolioRequest;
+use App\Http\Resources\PortfolioResource;
 use App\Models\Resume;
 
 class PortfolioController extends Controller
@@ -30,7 +31,7 @@ class PortfolioController extends Controller
         $data = $request->validated();
         $resume = Resume::firstOrCreate(['user_id' => auth()->id()]);
         $portfolio = $resume->portfolios()->create($data);
-        return response()->json($portfolio);
+        return response()->json(new PortfolioResource($portfolio));
     }
 
     /**
@@ -55,7 +56,7 @@ class PortfolioController extends Controller
     {
         $data = $request->validated();
         $portfolio->update($data);
-        return response()->json($portfolio);
+        return response()->json(new PortfolioResource($portfolio));
     }
 
     /**
