@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             DiscussionSeeder::class,
             TagSeeder::class,
-            DiscussionTagSeeder::class
+            DiscussionTagSeeder::class,
+            DepartmentSeeder::class,
         ]);
     }
 }
