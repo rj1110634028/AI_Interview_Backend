@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\resetPasswordRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -103,6 +104,13 @@ class AuthController extends Controller
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
+    }
+
+    public function resetPassword(resetPasswordRequest $request)
+    {
+        $data = $request->validated();
+        User::find(auth()->id())->update(['password' => Hash::make($data['new_password'])]);
+        return response()->json(['message' => '密碼修改成功']);
     }
 
     /**
