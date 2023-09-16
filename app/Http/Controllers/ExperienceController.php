@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Experience;
 use App\Http\Requests\StoreExperienceRequest;
 use App\Http\Requests\UpdateExperienceRequest;
-use App\Models\ExperienceQuestion;
+use App\Http\Resources\ExperienceResource;
+use Illuminate\Support\Arr;
 
 class ExperienceController extends Controller
 {
@@ -16,15 +17,8 @@ class ExperienceController extends Controller
      */
     public function index()
     {
-        $experience = Experience::withCount('comments')->withCount('userFavorites')->get()->map(function ($item) {
-            $result = $item->toArray();
-            $result['poster_name'] = $item->user->name;
-            $result['poster_sex'] = $item->user->sex;
-            $result['questions'] = $item->question()->get(['question', 'answer']);
-            unset($result['user']);
-            return $result;
-        });
-        return response()->json($experience);
+        $experiences = Experience::withCount('comments')->withCount('userFavorites')->get();
+        return response()->json(ExperienceResource::collection($experiences->loadCount('comments')->loadCount('userFavorites')));
     }
 
     /**
@@ -37,24 +31,11 @@ class ExperienceController extends Controller
     {
         $data = $request->validated();
         $user = $request->user;
-        $experience = new Experience();
-        $experience->user()->associate($user);
-        $experience['company'] = $data["company"];
-        $experience['position'] = $data["position"];
-        $experience['date'] = $data["date"];
-        $experience['result'] = $data["result"];
-        $experience['difficulty'] = $data["difficulty"];
-        $experience['description'] = $data["description"];
-        $experience->save();
+        $experience = $user->experiences()->create(Arr::except($data,['questions']));
         foreach ($data['questions'] as $item) {
             $experience->question()->create(['question' => $item['question'], 'answer' => $item['answer']]);
         }
-        $result = $experience->toArray();
-        $result['poster_name'] = $experience->user->name;
-        $result['poster_sex'] = $experience->user->sex;
-        $result['questions'] = $experience->question()->get(['question', 'answer']);
-        unset($result['user']);
-        return response()->json($result);
+        return response()->json(new ExperienceResource($experience));
     }
 
     /**
@@ -65,12 +46,7 @@ class ExperienceController extends Controller
      */
     public function show(Experience $experience)
     {
-        $result = $experience->loadCount('comments')->loadCount('userFavorites')->toArray();
-        $result['poster_name'] = $experience->user->name;
-        $result['poster_sex'] = $experience->user->sex;
-        $result['questions'] = $experience->question()->get(['question', 'answer']);
-        unset($result['user']);
-        return response()->json($result);
+        return response()->json(new ExperienceResource($experience->loadCount('comments')->loadCount('userFavorites')));
     }
 
     /**
@@ -83,23 +59,12 @@ class ExperienceController extends Controller
     public function update(UpdateExperienceRequest $request, Experience $experience)
     {
         $data = $request->validated();
-        $experience['company'] = $data["company"];
-        $experience['position'] = $data["position"];
-        $experience['date'] = $data["date"];
-        $experience['result'] = $data["result"];
-        $experience['difficulty'] = $data["difficulty"];
-        $experience['description'] = $data["description"];
-        $experience->save();
+        $experience->update(Arr::except($data,['questions']));
         $experience->question()->delete();
         foreach ($data['questions'] as $item) {
             $experience->question()->create(['question' => $item['question'], 'answer' => $item['answer']]);
         }
-        $result = $experience->toArray();
-        $result['poster_name'] = $experience->user->name;
-        $result['poster_sex'] = $experience->user->sex;
-        $result['questions'] = $experience->question()->get(['question', 'answer']);
-        unset($result['user']);
-        return response()->json($result);
+        return response()->json(new ExperienceResource($experience));
     }
 
     /**
@@ -114,5 +79,16 @@ class ExperienceController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         $experience->delete();
         return response()->json(['message' => 'success']);
+    }
+
+    /**
+     * Show user's own experiences.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function ownExperience()
+    {
+        $experiences = auth()->user()->experiences;
+        return response()->json(ExperienceResource::collection($experiences->loadCount('comments')->loadCount('userFavorites')));
     }
 }
