@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('education', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('resume_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('department_id')->constrained()->cascadeOnDelete();
+            $table->string('school', 50);
+            $table->string('educational_level', 5);
+            $table->date('admission_date');
+            $table->date('graduation_date')->nullable();
             $table->timestamps();
         });
     }

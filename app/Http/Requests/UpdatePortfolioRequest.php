@@ -13,7 +13,7 @@ class UpdatePortfolioRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->route('portfolio')->resume->user_id === auth()->user()->id;
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdatePortfolioRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
+            'link' => ['nullable', 'string'],
         ];
     }
 }

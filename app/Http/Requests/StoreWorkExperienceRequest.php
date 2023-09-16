@@ -13,7 +13,7 @@ class StoreWorkExperienceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StoreWorkExperienceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'company' => ['required', 'string', 'max:50'],
+            'position' => ['required', 'string', 'max:50'],
+            'description' => ['required', 'string'],
+            'start_work' => ['required', 'date'],
+            'end_work' => ['nullable', 'date'],
         ];
     }
 }

@@ -13,7 +13,7 @@ class StoreEducationRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StoreEducationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'department_id' => ['required', 'integer'],
+            'school' => ['required', 'string'],
+            'educational_level' => ['required', 'string'],
+            'admission_date' => ['required', 'date'],
+            'graduation_date' => ['nullable', 'date'],
         ];
     }
 }

@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Portfolio extends Model
 {
     use HasFactory;
+
+    protected $hidden = [];
+
+    protected $guarded = [];
+    
+    function resume()
+    {
+        return $this->belongsTo(Resume::class);
+    }
 }

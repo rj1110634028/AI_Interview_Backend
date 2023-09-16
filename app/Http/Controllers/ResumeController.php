@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Resume;
 use App\Http\Requests\StoreResumeRequest;
 use App\Http\Requests\UpdateResumeRequest;
+use App\Http\Resources\ResumeResource;
+use App\Models\Skill;
+use App\Models\User;
+use Illuminate\Support\Arr;
 
 class ResumeController extends Controller
 {
@@ -15,7 +19,9 @@ class ResumeController extends Controller
      */
     public function index()
     {
-        //
+        $user = User::find(auth()->id());
+        $resume = Resume::firstOrNew(['user_id' => $user->id]);
+        return response()->json(new ResumeResource($resume));
     }
 
     /**
@@ -49,7 +55,17 @@ class ResumeController extends Controller
      */
     public function update(UpdateResumeRequest $request, Resume $resume)
     {
-        //
+        $data = $request->validated();
+        $user = User::find(auth()->id());
+        $resume = Resume::updateOrCreate(['user_id' => $user->id], Arr::except($data, 'skills'));
+        if (key_exists('skills', $data)) {
+            foreach ($data['skills'] as &$value) {
+                $skill = Skill::firstOrCreate(['name' => $value]);
+                $value = $skill->id;
+            }
+            $resume->skills()->sync($data['skills']);
+        }
+        return response()->json(new ResumeResource($resume));
     }
 
     /**
