@@ -29,8 +29,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::patch('auth/profile', 'update');
 });
 
-Route::middleware(AuthUser::class)->group(function () {
-    Route::resource('category', CategoryController::class);
+Route::controller(CategoryController::class)->group(function () {
+    Route::get('category', 'index');
 });
 
 Route::middleware(AuthUser::class)->group(function () {
