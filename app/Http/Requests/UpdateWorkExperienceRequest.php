@@ -13,7 +13,7 @@ class UpdateWorkExperienceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->route('work_experience')->resume->user_id === auth()->user()->id;
     }
 
     /**
@@ -24,7 +24,11 @@ class UpdateWorkExperienceRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'company' => ['nullable', 'string', 'max:50'],
+            'position' => ['nullable', 'string', 'max:50'],
+            'description' => ['nullable', 'string'],
+            'start_work' => ['nullable', 'date'],
+            'end_work' => ['nullable', 'date'],
         ];
     }
 }

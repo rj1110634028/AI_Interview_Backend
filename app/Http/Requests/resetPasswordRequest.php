@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateEducationRequest extends FormRequest
+class resetPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class UpdateEducationRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->route('education')->resume->user_id === auth()->user()->id;
+        return true;
     }
 
     /**
@@ -24,11 +24,8 @@ class UpdateEducationRequest extends FormRequest
     public function rules()
     {
         return [
-            'department_id' => ['nullable', 'integer'],
-            'school' => ['nullable', 'string'],
-            'educational_level' => ['nullable', 'string'],
-            'admission_date' => ['nullable', 'date'],
-            'graduation_date' => ['nullable', 'date'],
+            'password' => ['current_password:api'],
+            'new_password' => ['required', 'string', 'confirmed', 'min:8', 'regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/']
         ];
     }
 }

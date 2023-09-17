@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\WorkExperience;
 use App\Http\Requests\StoreWorkExperienceRequest;
 use App\Http\Requests\UpdateWorkExperienceRequest;
+use App\Http\Resources\WorkExperienceResource;
+use App\Models\Resume;
 
 class WorkExperienceController extends Controller
 {
@@ -26,7 +28,10 @@ class WorkExperienceController extends Controller
      */
     public function store(StoreWorkExperienceRequest $request)
     {
-        //
+        $data = $request->validated();
+        $resume = Resume::firstOrCreate(['user_id' => auth()->id()]);
+        $workExperience = $resume->workExperiences()->create($data);
+        return response()->json(new WorkExperienceResource($workExperience));
     }
 
     /**
@@ -49,7 +54,9 @@ class WorkExperienceController extends Controller
      */
     public function update(UpdateWorkExperienceRequest $request, WorkExperience $workExperience)
     {
-        //
+        $data = $request->validated();
+        $workExperience->update($data);
+        return response()->json(new WorkExperienceResource($workExperience));
     }
 
     /**

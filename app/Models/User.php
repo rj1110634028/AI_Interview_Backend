@@ -59,6 +59,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->morphedByMany(Experience::class, 'article', 'favorites');
     }
 
+    function resume()
+    {
+        return $this->hasOne(Resume::class);
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
