@@ -27,7 +27,7 @@ class StoreDiscussionRequest extends FormRequest
             "title" => 'required',
             "content" => 'required',
             "category_id" => 'required|exists:categories,id',
-            "tags" => 'nullable|array'
+            "tags" => 'array'
         ];
     }
 }
