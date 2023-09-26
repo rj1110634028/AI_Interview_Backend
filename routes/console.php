@@ -20,7 +20,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('json-config', function () {
-    $process = new Process(['python3', config('app.job_script'), base_path() . '/storage/job.json']);
-
+    $process = new Process(['python3', config('app.job_script'), config('app.job_json_saving_path')]);
     echo $process->run() . "\n";
 });
