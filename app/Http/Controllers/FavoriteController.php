@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Favorite;
 use App\Http\Requests\StoreFavoriteRequest;
 use App\Http\Requests\UpdateFavoriteRequest;
+use App\Http\Resources\DiscussionResource;
+use App\Http\Resources\ExperienceResource;
 use App\Models\Discussion;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,7 +24,7 @@ class FavoriteController extends Controller
         $discussion = $user->favoriteDiscussions()->get();
         $experience = $user->favoriteExperiences()->get();
 
-        return response()->json(["discussion" => $discussion, "experience" => $experience]);
+        return response()->json(["discussion" => DiscussionResource::collection($discussion), "experience" => ExperienceResource::collection($experience)]);
     }
 
     /**
