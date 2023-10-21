@@ -7,6 +7,7 @@ use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\WorkExperienceController;
@@ -98,4 +99,9 @@ Route::middleware(AuthUser::class)->group(function () {
         Route::post('work-experience', 'store');
         Route::patch('work-experience/{work_experience}', 'update');
     });
+});
+
+// Job
+Route::controller(JobController::class)->group(function () {
+    Route::get('job', 'index');
 });
