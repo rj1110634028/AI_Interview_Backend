@@ -35,6 +35,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('auth/reset-password', 'resetPassword');
 });
 
+// Category
 Route::controller(CategoryController::class)->group(function () {
     Route::get('category', 'index');
 });
