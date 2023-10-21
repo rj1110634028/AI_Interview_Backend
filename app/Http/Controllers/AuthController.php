@@ -54,7 +54,7 @@ class AuthController extends Controller
             $data,
             ['password' => Hash::make($data['password'])]
         ));
-        if ($user)
+        if (!$user)
             return response()->json(['message' => '註冊失敗'], 422);
         return response()->json(['message' => '註冊成功'], 200);
     }
