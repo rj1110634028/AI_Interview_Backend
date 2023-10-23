@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('interview_records', function (Blueprint $table) {
+        Schema::create('interview_question_motions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->json('result')->nullable();
+            $table->foreignId('interview_question_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('motion_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('interview_records');
+        Schema::dropIfExists('interview_question_motions');
     }
 };

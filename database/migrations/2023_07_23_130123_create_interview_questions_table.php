@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('interview_questions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('interview_record_id')->constrained()->cascadeOnDelete();
+            $table->text('question');
+            $table->text('answer')->nullable();
+            $table->decimal('speaking_speed', 10, 2)->nullable();
             $table->timestamps();
         });
     }
