@@ -7,6 +7,7 @@ use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\InterviewRecordController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ResumeController;
@@ -98,6 +99,13 @@ Route::middleware(AuthUser::class)->group(function () {
     Route::controller(WorkExperienceController::class)->group(function () {
         Route::post('work-experience', 'store');
         Route::patch('work-experience/{work_experience}', 'update');
+    });
+});
+
+// InterviewRecord
+Route::controller(InterviewRecordController::class)->group(function () {
+    Route::middleware(AuthUser::class)->group(function () {
+        Route::apiResource('interview-record', InterviewRecordController::class);
     });
 });
 

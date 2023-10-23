@@ -26,9 +26,29 @@ class InterviewRecordController extends Controller
      */
     public function store(StoreInterviewRecordRequest $request)
     {
-        //
+        $data = $request->validated();
+        $interviewRecord = InterviewRecord::create(['user_id' => auth()->id(), 'position' => json_encode($data['position'])]);
+        $type = $data['position']['type'];
+        $path = config('app.interview_question');
+        $jsonString = file_get_contents($path);
+        $all_questions = json_decode($jsonString, true);
+        $questions = array();
+        foreach ($all_questions as $row) {
+            if (in_array($row['type'], ['basic', 'start'])) {
+                array_push($questions, $row['data'][array_rand($row['data'])]);
+            }
+            if ($row['type'] == $type) {
+                foreach (array_rand($row['data'], 3) as $value) {
+                    array_push($questions, $row['data'][$value]);
+                }
+            }
+        }
+        return response()->json(['questions' => $questions, 'id' => $interviewRecord->id]);
     }
 
+    public function InterviewVideoParse() {
+        
+    }
     /**
      * Display the specified resource.
      *

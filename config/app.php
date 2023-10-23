@@ -195,6 +195,8 @@ return [
     ])->toArray(),
 
 
+    'interview_question' => base_path() . env('INTERVIEW_QUESTION', '/storage/question.json'),
+
     'job_script' => base_path() . env('JOB_SCRIPT', '/script/job104/main.py'),
 
     'job_json_saving_path' => base_path() . env('JOB_JSON_SAVING_PATH', '/storage/job.json'),
