@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('motions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('TW');
+            $table->string('zh_TW')->nullable();
             $table->timestamps();
         });
     }

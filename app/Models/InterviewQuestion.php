@@ -11,11 +11,15 @@ class InterviewQuestion extends Model
 
     protected $hidden = [];
 
-    protected $guarded = [];
+    protected $fillable = [
+        'question',
+        'answer',
+        'speaking_speed',
+    ];
 
     function interview_records()
     {
-        return $this->belongsTo(InterviewQuestion::class);
+        return $this->belongsTo(InterviewRecord::class);
     }
 
     function motions()

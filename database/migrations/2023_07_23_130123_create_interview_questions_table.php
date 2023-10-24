@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('question');
             $table->text('answer')->nullable();
             $table->decimal('speaking_speed', 10, 2)->nullable();
+            $table->boolean('is_analyze')->default(false);
             $table->timestamps();
         });
     }

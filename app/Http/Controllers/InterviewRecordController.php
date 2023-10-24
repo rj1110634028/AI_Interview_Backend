@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\InterviewRecord;
 use App\Http\Requests\StoreInterviewRecordRequest;
 use App\Http\Requests\UpdateInterviewRecordRequest;
-use App\Jobs\InterviewVideo;
-use Illuminate\Http\Request;
-use Symfony\Component\Process\Process;
+use App\Models\Motion;
 
 class InterviewRecordController extends Controller
 {
@@ -46,7 +44,10 @@ class InterviewRecordController extends Controller
                 }
             }
         }
-        return response()->json(['questions' => $questions, 'id' => $interviewRecord->id]);
+        foreach ($questions as $question) {
+            $question = $interviewRecord->interview_questions()->create(['question' => $question]);
+        }
+        return response()->json(['questions' => $interviewRecord->interview_questions, 'id' => $interviewRecord->id]);
     }
 
     /**
@@ -55,9 +56,18 @@ class InterviewRecordController extends Controller
      * @param  \App\Models\InterviewRecord  $interviewRecord
      * @return \Illuminate\Http\Response
      */
-    public function show(InterviewRecord $interviewRecord)
+    public function show(InterviewRecord $interview_record)
     {
-        //
+        $interview_questions = $interview_record->interview_questions;
+        $is_analyze = true;
+        foreach ($interview_questions as $interview_question) {
+            if (!($is_analyze && $interview_question->is_analyze)) 
+                return response()->json(['success' => false, 'message' => '請在稍後，正在努力為您分析面試資料。'], 400);
+            $is_analyze = $is_analyze && $interview_question->is_analyze;
+        }
+        // $result=$interview_questions->query()->join();
+
+        return response()->json($interview_questions);
     }
 
     /**
@@ -81,11 +91,5 @@ class InterviewRecordController extends Controller
     public function destroy(InterviewRecord $interviewRecord)
     {
         //
-    }
-
-    public function analyzeInterviewVideo(Request $request)
-    {
-        InterviewVideo::dispatch($request['video']);
-        return response()->noContent();
     }
 }

@@ -13,7 +13,7 @@ class UpdateInterviewQuestionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateInterviewQuestionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'video' => ['required', 'string'],
+            'answer' => ['required', 'string'],
+            'speaking_speed' => ['required', 'integer'],
         ];
     }
 }

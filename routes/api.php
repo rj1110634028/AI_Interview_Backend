@@ -7,6 +7,7 @@ use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\InterviewQuestionController;
 use App\Http\Controllers\InterviewRecordController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PortfolioController;
@@ -103,11 +104,13 @@ Route::middleware(AuthUser::class)->group(function () {
 });
 
 // InterviewRecord
-Route::controller(InterviewRecordController::class)->group(function () {
-    Route::middleware(AuthUser::class)->group(function () {
-        Route::apiResource('interview-record', InterviewRecordController::class);
-        Route::post('interview-record/analyze-video', 'analyzeInterviewVideo');
-    });
+Route::middleware(AuthUser::class)->group(function () {
+    Route::apiResource('interview-record', InterviewRecordController::class);
+    Route::post('interview-question/{interview_question}', [InterviewQuestionController::class, 'analyzeInterviewVideo']);
+});
+// InterviewRecord
+Route::middleware(AuthUser::class)->group(function () {
+    Route::apiResource('interview-question', InterviewQuestionController::class);
 });
 
 // Job
