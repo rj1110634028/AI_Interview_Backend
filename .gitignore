@@ -13,4 +13,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-/storage/*.json
+/storage/job.json
+/storage/interview/*

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\InterviewRecord;
 use App\Http\Requests\StoreInterviewRecordRequest;
 use App\Http\Requests\UpdateInterviewRecordRequest;
+use App\Jobs\InterviewVideo;
+use Illuminate\Http\Request;
+use Symfony\Component\Process\Process;
 
 class InterviewRecordController extends Controller
 {
@@ -46,9 +49,6 @@ class InterviewRecordController extends Controller
         return response()->json(['questions' => $questions, 'id' => $interviewRecord->id]);
     }
 
-    public function InterviewVideoParse() {
-        
-    }
     /**
      * Display the specified resource.
      *
@@ -81,5 +81,11 @@ class InterviewRecordController extends Controller
     public function destroy(InterviewRecord $interviewRecord)
     {
         //
+    }
+
+    public function analyzeInterviewVideo(Request $request)
+    {
+        InterviewVideo::dispatch($request['video']);
+        return response()->noContent();
     }
 }
