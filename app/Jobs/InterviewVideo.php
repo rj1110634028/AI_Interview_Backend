@@ -55,7 +55,7 @@ class InterviewVideo implements ShouldQueue
             }
         }
         $this->interviewQuestion->motions()->sync($motion_ids);
-        $this->interviewQuestion->update(['is_analyze' => tr]);
+        $this->interviewQuestion->update(['is_analyze' => true]);
         unlink($blob_file_path);
         unlink($video_path);
     }
