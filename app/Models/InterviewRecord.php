@@ -13,6 +13,10 @@ class InterviewRecord extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'position' => 'json'
+    ];
+
     function interview_questions()
     {
         return $this->hasMany(InterviewQuestion::class);

@@ -29,7 +29,7 @@ class InterviewRecordController extends Controller
     public function store(StoreInterviewRecordRequest $request)
     {
         $data = $request->validated();
-        $interviewRecord = InterviewRecord::create(['user_id' => auth()->id(), 'position' => json_encode($data['position'])]);
+        $interviewRecord = InterviewRecord::create(['user_id' => auth()->id(), 'position' => $data['position']]);
         $type = $data['position']['type'];
         $path = config('app.interview_question');
         $jsonString = file_get_contents($path);
