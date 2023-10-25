@@ -6,6 +6,7 @@ use App\Models\InterviewRecord;
 use App\Http\Requests\StoreInterviewRecordRequest;
 use App\Http\Requests\UpdateInterviewRecordRequest;
 use App\Models\Motion;
+use Illuminate\Database\Eloquent\Builder;
 
 class InterviewRecordController extends Controller
 {
@@ -61,13 +62,17 @@ class InterviewRecordController extends Controller
         $interview_questions = $interview_record->interview_questions;
         $is_analyze = true;
         foreach ($interview_questions as $interview_question) {
-            if (!($is_analyze && $interview_question->is_analyze)) 
-                return response()->json(['success' => false, 'message' => '請在稍後，正在努力為您分析面試資料。'], 400);
+            if (!($is_analyze && $interview_question->is_analyze))
+                return response()->json(['message' => '請在稍後，正在努力為您分析面試資料。'], 400);
             $is_analyze = $is_analyze && $interview_question->is_analyze;
         }
-        // $result=$interview_questions->query()->join();
+        $interview_record->motions = Motion::whereHas('interview_questions', function (Builder $query) use ($interview_record) {
+            $query->where('interview_record_id', $interview_record->id);
+        })->withCount(['interview_questions as count' => function (Builder $query) use ($interview_record) {
+            $query->where('interview_record_id', $interview_record->id);
+        }])->get();
 
-        return response()->json($interview_questions);
+        return response()->json($interview_record);
     }
 
     /**

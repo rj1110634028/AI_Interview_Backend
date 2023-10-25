@@ -25,8 +25,8 @@ class UpdateInterviewQuestionRequest extends FormRequest
     {
         return [
             'video' => ['required', 'string'],
-            'answer' => ['required', 'string'],
-            'speaking_speed' => ['required', 'integer'],
+            'answer' => ['nullable', 'string'],
+            'speaking_speed' => ['required'],
         ];
     }
 }

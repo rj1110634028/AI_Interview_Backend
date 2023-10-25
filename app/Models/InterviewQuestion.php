@@ -15,6 +15,7 @@ class InterviewQuestion extends Model
         'question',
         'answer',
         'speaking_speed',
+        'is_analyze'
     ];
 
     function interview_records()
