@@ -16,11 +16,11 @@ class InterviewQuestion extends Model
         'answer',
         'speaking_speed',
         'is_analyze',
-        'position'
+        'motion'
     ];
 
     protected $casts = [
-        'position' => 'json'
+        'motion' => 'json'
     ];
 
     function interview_records()

@@ -66,11 +66,6 @@ class InterviewRecordController extends Controller
                 return response()->json(['message' => '請在稍後，正在努力為您分析面試資料。'], 400);
             $is_analyze = $is_analyze && $interview_question->is_analyze;
         }
-        $interview_record->motions = Motion::whereHas('interview_questions', function (Builder $query) use ($interview_record) {
-            $query->where('interview_record_id', $interview_record->id);
-        })->withCount(['interview_questions as count' => function (Builder $query) use ($interview_record) {
-            $query->where('interview_record_id', $interview_record->id);
-        }])->get();
 
         return response()->json($interview_record);
     }
