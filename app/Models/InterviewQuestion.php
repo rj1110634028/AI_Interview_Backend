@@ -15,16 +15,16 @@ class InterviewQuestion extends Model
         'question',
         'answer',
         'speaking_speed',
-        'is_analyze'
+        'is_analyze',
+        'position'
+    ];
+
+    protected $casts = [
+        'position' => 'json'
     ];
 
     function interview_records()
     {
         return $this->belongsTo(InterviewRecord::class);
-    }
-
-    function motions()
-    {
-        return $this->belongsToMany(Motion::class, 'interview_question_motions');
     }
 }
