@@ -106,7 +106,6 @@ Route::middleware(AuthUser::class)->group(function () {
 // InterviewRecord
 Route::middleware(AuthUser::class)->group(function () {
     Route::apiResource('interview-record', InterviewRecordController::class);
-    Route::post('interview-question/{interview_question}', [InterviewQuestionController::class, 'analyzeInterviewVideo']);
 });
 // InterviewRecord
 Route::middleware(AuthUser::class)->group(function () {

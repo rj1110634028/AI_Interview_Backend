@@ -49,7 +49,7 @@ class InterviewVideo implements ShouldQueue
         $process = new Process([config('app.python_command_prefix'), base_path() . '/script/MockInterview/main.py', $video_path]);
         $process->setTimeout(3600);
         $process->run();
-        $this->interviewQuestion->update(['is_analyze' => true, 'motion' => json_decode($process->getOutput(), true)]);
+        $this->interviewQuestion->update(['motion' => json_decode(str_replace("'", '"', $process->getOutput()), true)]);
         unlink($blob_file_path);
         unlink($video_path);
     }

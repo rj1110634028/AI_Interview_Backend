@@ -17,7 +17,11 @@ class InterviewRecordController extends Controller
      */
     public function index()
     {
-        //
+        $interview_records = InterviewRecord::with('interview_questions')->where('user_id', auth()->id())->whereDoesntHave('interview_questions', function (Builder $query) {
+            $query->where('motion', null);
+        });
+
+        return response()->json($interview_records->get());
     }
 
     /**
@@ -59,13 +63,13 @@ class InterviewRecordController extends Controller
      */
     public function show(InterviewRecord $interview_record)
     {
-        $interview_questions = $interview_record->interview_questions;
-        $is_analyze = true;
-        foreach ($interview_questions as $interview_question) {
-            if (!($is_analyze && $interview_question->is_analyze))
-                return response()->json(['message' => '請在稍後，正在努力為您分析面試資料。'], 400);
-            $is_analyze = $is_analyze && $interview_question->is_analyze;
-        }
+        $interview_record = $interview_record->query()
+            ->with('interview_questions')
+            ->whereDoesntHave('interview_questions', function (Builder $query) {
+                $query->where('motion', null);
+            })->first();
+        if (!$interview_record)
+            return response()->json(['message' => '請在稍後，正在努力為您分析面試資料。'], 400);
 
         return response()->json($interview_record);
     }
