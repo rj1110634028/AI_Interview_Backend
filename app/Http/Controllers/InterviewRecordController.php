@@ -63,8 +63,8 @@ class InterviewRecordController extends Controller
      */
     public function show(InterviewRecord $interview_record)
     {
-        $interview_record = $interview_record->query()
-            ->with('interview_questions')
+        $interview_record = InterviewRecord::with('interview_questions')
+            ->where('id', $interview_record->id)
             ->whereDoesntHave('interview_questions', function (Builder $query) {
                 $query->where('motion', null);
             })->first();
