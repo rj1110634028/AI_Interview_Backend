@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnalyzeInterviewVideoRequest;
 use App\Models\InterviewQuestion;
 use App\Http\Requests\StoreInterviewQuestionRequest;
 use App\Http\Requests\UpdateInterviewQuestionRequest;
+use App\Jobs\InterviewVideo;
+use Illuminate\Http\Request;
 
 class InterviewQuestionController extends Controller
 {
@@ -49,7 +52,10 @@ class InterviewQuestionController extends Controller
      */
     public function update(UpdateInterviewQuestionRequest $request, InterviewQuestion $interviewQuestion)
     {
-        //
+        $data = $request->validated();
+        $interviewQuestion->update($data);
+        InterviewVideo::dispatch($data['video'], $interviewQuestion);
+        return response()->json($interviewQuestion);
     }
 
     /**

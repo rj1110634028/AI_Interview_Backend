@@ -1,3 +1,6 @@
 [submodule "script/job104"]
 	path = script/job104
 	url = git@github.com:Jane0731/jon104.git
+[submodule "script/MockInterview"]
+	path = script/MockInterview
+	url = git@github.com:MING-CHUNLee/MockInterview.git

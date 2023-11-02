@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Taipei',
 
     /*
     |--------------------------------------------------------------------------
@@ -194,6 +194,9 @@ return [
         // ...
     ])->toArray(),
 
+    'python_command_prefix' => env('PYTHON_COMMAND_PREFIX', 'python3'),
+
+    'interview_question' => base_path() . env('INTERVIEW_QUESTION', '/storage/question.json'),
 
     'job_script' => base_path() . env('JOB_SCRIPT', '/script/job104/main.py'),
 
