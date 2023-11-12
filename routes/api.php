@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiVoiceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
@@ -115,4 +116,9 @@ Route::middleware(AuthUser::class)->group(function () {
 // Job
 Route::controller(JobController::class)->group(function () {
     Route::get('job', 'index');
+});
+
+// Job
+Route::controller(AiVoiceController::class)->group(function () {
+    Route::get('AI-voice/token', 'getToken');
 });

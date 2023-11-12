@@ -201,4 +201,6 @@ return [
     'job_script' => base_path() . env('JOB_SCRIPT', '/script/job104/main.py'),
 
     'job_json_saving_path' => base_path() . env('JOB_JSON_SAVING_PATH', '/storage/job.json'),
+
+    'yating_key' => base_path() . env('YATING_KEY'),
 ];
