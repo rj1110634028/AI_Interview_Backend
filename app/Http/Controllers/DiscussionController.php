@@ -10,9 +10,8 @@ use App\Http\Resources\DiscussionResource;
 use App\Models\Category;
 use App\Models\DiscussionTag;
 use App\Models\Tag;
-use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 
 class DiscussionController extends Controller
 {
@@ -21,11 +20,48 @@ class DiscussionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->search;
+        $category = $request->category;
+        $query = Discussion::query()->withCount(['comments', 'userFavorites']);
+        $query->when(
+            $search,
+            function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('content', 'like', "%{$search}%")
+                    ->orWhereHas(
+                        'tags',
+                        function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%");
+                        }
+                    );
+            }
+        );
+        $query->when(
+            $category,
+            function ($query) use ($category) {
+                $query->WhereHas(
+                    'category',
+                    function ($query) use ($category) {
+                        $query->where('id', $category);
+                    }
+                );
+            },
+            function ($query) {
+                $query->WhereHas(
+                    'category',
+                    function ($query) {
+                        $query->where('id', Category::first()->id);
+                    }
+                );
+            }
+        );
+        $popular = $query;
+        $new = $query;
         $result = [
-            'popular'=>DiscussionResource::collection(Discussion::withCount(['comments','userFavorites'])->orderBy('comments_count', 'desc')->get()),
-            'new'=>DiscussionResource::collection(Discussion::withCount(['comments','userFavorites'])->orderBy('created_at', 'desc')->get()),
+            'popular' => DiscussionResource::collection($new->orderBy('comments_count', 'desc')->get()),
+            'new' => DiscussionResource::collection($popular->orderBy('created_at', 'desc')->get()),
         ];
         return response()->json($result);
     }
@@ -78,7 +114,7 @@ class DiscussionController extends Controller
     public function update(UpdateDiscussionRequest $request, Discussion $discussion)
     {
         $data = $request->validated();
-        $discussion->update(Arr::except($data,['tags']));
+        $discussion->update(Arr::except($data, ['tags']));
         if (array_key_exists('tags', $data)) {
             foreach ($data['tags'] as &$item) {
                 $item = Tag::firstOrCreate(['name' => $item])->id;
@@ -113,7 +149,8 @@ class DiscussionController extends Controller
         return response()->json(new DiscussionResource($discussions->loadCount('comments')->loadCount('userFavorites')));
     }
 
-    public function popularTag() {
+    public function popularTag()
+    {
         return Tag::withCount('discussions')->orderBy('discussions_count', 'desc')->get();
     }
 }
