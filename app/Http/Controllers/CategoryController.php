@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::withCount('discussions')->orderBy('discussions_count', 'desc')->get();
+        return Category::all();
     }
 
     /**
