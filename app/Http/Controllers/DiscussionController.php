@@ -109,4 +109,8 @@ class DiscussionController extends Controller
         $discussions = auth()->user()->discussions;
         return response()->json(new DiscussionResource($discussions->loadCount('comments')->loadCount('userFavorites')));
     }
+
+    public function popularTag() {
+        return Tag::withCount('discussions')->orderBy('discussions_count', 'desc')->get();
+    }
 }

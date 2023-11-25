@@ -49,6 +49,7 @@ Route::controller(DiscussionController::class)->group(function () {
         Route::resource('discussion', DiscussionController::class)->except(['index', 'show']);
         Route::get('auth/discussion', 'ownDiscussion');
     });
+    Route::get('discussion/popular-tag', 'popularTag');
     Route::get('discussion', 'index');
     Route::get('discussion/{discussion}', 'show');
 });

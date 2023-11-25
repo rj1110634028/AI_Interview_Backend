@@ -16,7 +16,7 @@ class Category extends Model
 
     protected $guarded = [];
 
-    function discussion()
+    function discussions()
     {
         return $this->hasMany(Discussion::class);
     }
