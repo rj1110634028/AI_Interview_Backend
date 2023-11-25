@@ -17,8 +17,11 @@ class ExperienceController extends Controller
      */
     public function index()
     {
-        $experiences = Experience::withCount('comments')->withCount('userFavorites')->get();
-        return response()->json(ExperienceResource::collection($experiences->loadCount('comments')->loadCount('userFavorites')));
+        $result = [
+            'popular'=>ExperienceResource::collection(Experience::withCount(['comments','userFavorites'])->orderBy('comments_count', 'desc')->get()),
+            'new'=>ExperienceResource::collection(Experience::withCount(['comments','userFavorites'])->orderBy('created_at', 'desc')->get()),
+        ];
+        return response()->json($result);
     }
 
     /**

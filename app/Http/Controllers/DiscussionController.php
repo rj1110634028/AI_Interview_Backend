@@ -23,8 +23,11 @@ class DiscussionController extends Controller
      */
     public function index()
     {
-        $discussions = Discussion::withCount('comments')->withCount('userFavorites')->get();
-        return response()->json(DiscussionResource::collection($discussions));
+        $result = [
+            'popular'=>DiscussionResource::collection(Discussion::withCount(['comments','userFavorites'])->orderBy('comments_count', 'desc')->get()),
+            'new'=>DiscussionResource::collection(Discussion::withCount(['comments','userFavorites'])->orderBy('created_at', 'desc')->get()),
+        ];
+        return response()->json($result);
     }
 
     /**
