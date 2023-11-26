@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('result', 5);
             $table->integer('difficulty');
             $table->text('description');
+            $table->char('city',3);
             $table->timestamps();
         });
     }

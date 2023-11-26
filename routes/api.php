@@ -60,6 +60,7 @@ Route::controller(ExperienceController::class)->group(function () {
         Route::resource('experience', ExperienceController::class);
         Route::get('auth/experience', 'ownExperience');
     });
+    Route::get('city-options', 'cityOptions');
     Route::get('experience', 'index');
     Route::get('experience/{experience}', 'show');
 });

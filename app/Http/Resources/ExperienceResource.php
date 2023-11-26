@@ -27,6 +27,7 @@ class ExperienceResource extends JsonResource
             "date" => $this->date,
             "result" => $this->result,
             "difficulty" => $this->difficulty,
+            "city" => $this->city,
             "description" => $this->description,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
