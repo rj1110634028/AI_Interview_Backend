@@ -6,6 +6,7 @@ use App\Models\Experience;
 use App\Http\Requests\StoreExperienceRequest;
 use App\Http\Requests\UpdateExperienceRequest;
 use App\Http\Resources\ExperienceResource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class ExperienceController extends Controller
@@ -15,11 +16,21 @@ class ExperienceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $city = $request->city;
+        $query = Experience::query()->withCount(['comments', 'userFavorites']);
+        $query->when(
+            $city,
+            function ($query) use ($city) {
+                $query->where('city', $city);
+            }
+        );
+        $popular = $query;
+        $new = $query;
         $result = [
-            'popular' => ExperienceResource::collection(Experience::withCount(['comments', 'userFavorites'])->orderBy('comments_count', 'desc')->get()),
-            'new' => ExperienceResource::collection(Experience::withCount(['comments', 'userFavorites'])->orderBy('created_at', 'desc')->get()),
+            'popular' => ExperienceResource::collection($popular->orderBy('comments_count', 'desc')->get()),
+            'new' => ExperienceResource::collection($new->orderBy('created_at', 'desc')->get()),
         ];
         return response()->json($result);
     }
