@@ -18,12 +18,13 @@ class ExperienceController extends Controller
      */
     public function index(Request $request)
     {
-        $city = $request->city;
+        // $request->validate(['city'=>'array']);
+        $city = explode(',', $request->city);
         $query = Experience::query()->withCount(['comments', 'userFavorites']);
         $query->when(
-            $city,
+            $city != [""],
             function ($query) use ($city) {
-                $query->where('city', $city);
+                $query->whereIn('city', $city);
             }
         );
         $popular = $query;
