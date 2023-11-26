@@ -47,14 +47,6 @@ class DiscussionController extends Controller
                         $query->where('id', $category);
                     }
                 );
-            },
-            function ($query) {
-                $query->WhereHas(
-                    'category',
-                    function ($query) {
-                        $query->where('id', Category::first()->id);
-                    }
-                );
             }
         );
         $popular = $query;

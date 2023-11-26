@@ -15,7 +15,14 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        $result = [
+            [
+                "id" => null,
+                "name" => "全部類別"
+            ],
+            ...Category::all()->toArray()
+        ];
+        return $result;
     }
 
     /**
