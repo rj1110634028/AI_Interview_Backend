@@ -12,6 +12,7 @@ use App\Http\Controllers\InterviewRecordController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\WebController;
 use App\Http\Controllers\WorkExperienceController;
 use App\Http\Middleware\AuthUser;
 use Illuminate\Support\Facades\Route;
@@ -117,4 +118,9 @@ Route::middleware(AuthUser::class)->group(function () {
 // Job
 Route::controller(JobController::class)->group(function () {
     Route::get('job', 'index');
+});
+
+// Other
+Route::controller(WebController::class)->group(function () {
+    Route::get('statistics', 'statistics');
 });
