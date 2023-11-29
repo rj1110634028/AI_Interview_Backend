@@ -49,11 +49,12 @@ class DiscussionController extends Controller
                 );
             }
         );
-        $popular = $query;
-        $new = $query;
+        $popular = $query->orderBy('comments_count', 'desc')->get();
+        $query->getQuery()->orders = null;
+        $new = $query->orderBy('created_at', 'desc')->get();
         $result = [
-            'popular' => DiscussionResource::collection($new->orderBy('comments_count', 'desc')->get()),
-            'new' => DiscussionResource::collection($popular->orderBy('created_at', 'desc')->get()),
+            'popular' => DiscussionResource::collection($popular),
+            'new' => DiscussionResource::collection($new),
         ];
         return response()->json($result);
     }
