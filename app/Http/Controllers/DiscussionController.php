@@ -144,6 +144,6 @@ class DiscussionController extends Controller
 
     public function popularTag()
     {
-        return Tag::withCount('discussions')->orderBy('discussions_count', 'desc')->get();
+        return Tag::withCount('discussions')->has('discussions')->orderBy('discussions_count', 'desc')->get();
     }
 }
