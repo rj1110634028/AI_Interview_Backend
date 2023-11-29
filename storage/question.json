@@ -32,7 +32,7 @@
         ]
     },
     {
-        "type": "資訊安全",
+        "type": "資安工程師",
         "data": [
             "請說明 Cookie 與 Session 的差別，與兩者適合使用的情境或功能(越詳細越好)",
             "簡單介紹 OSI 七層模型",
@@ -50,7 +50,7 @@
         ]
     },
     {
-        "type": "資料庫",
+        "type": "資料庫管理人員",
         "data": [
             "delete、drop、truncate 區別",
             "如何進行 SQL 最佳化？",
@@ -66,11 +66,10 @@
         ]
     },
     {
-        "type": "app",
+        "type": "Android工程師",
         "data": [
             "請介紹Activity的啟動模式和應用場景",
             "請介紹Handler機制以及與Message等之間的關係",
-            "何謂 OOP 、 POP ，那 Swift 是哪一種？",
             "什麼是 MVC 、 MVVM ，各自的優缺點？",
             "什麼時候用 Enum",
             "如何控制兩個非同步任務能按照你想要的順序完成",
@@ -84,7 +83,7 @@
         ]
     },
     {
-        "type": "前端",
+        "type": "前端工程師",
         "data": [
             "var、let、const 的差別？",
             "Array.forEach、Array.map、Array.filter、Array.reduce 的差別？",
@@ -100,6 +99,25 @@
             "如何降低網頁載入的效能？",
             "假如後端有很大一包資料（假設是高達 5 MB 的文字資料），需要花一些時間才能下載完，你身為前端工程師，能想出幾種方法去縮短使用者的等待時間？",
             "請簡單介紹 Vue 雙向數據綁定的原理"
+        ]
+    },
+    {
+        "type": "後端工程師",
+        "data": [
+            "什麼是 RESTful API？",
+            "Git 和 Git Flow 是什麼？如何應用？",
+            "Nginx 有哪些用途，優缺點是什麼？",
+            "JWT 的運作原理是什麼？",
+            "什麼是快取 (Cache)？快取 (Cache) 的機制為何？",
+            "什麼是 TDD？",
+            "什麼是 CI/CD ?",
+            "Container 和虛擬機器的差別為何？",
+            "什麼是 SQL Injection？該如何避免？",
+            "JWT和Session的差異是什麼？",
+            "比較 Thread 和 Process 的差別",
+            "有協作過的經驗嗎？遇到最大的困難是什麼？",
+            "你平常怎麼確保程式碼的可讀性和維護性？",
+            "什麼是Functional Programming? 簡單解釋你的理解"
         ]
     }
 ]
