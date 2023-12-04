@@ -27,11 +27,12 @@ class ExperienceController extends Controller
                 $query->whereIn('city', $city);
             }
         );
-        $popular = $query;
-        $new = $query;
+        $popular = $query->orderBy('comments_count', 'desc')->get();
+        $query->getQuery()->orders = null;
+        $new = $query->orderBy('created_at', 'desc')->get();
         $result = [
-            'popular' => ExperienceResource::collection($popular->orderBy('comments_count', 'desc')->get()),
-            'new' => ExperienceResource::collection($new->orderBy('created_at', 'desc')->get()),
+            'popular' => ExperienceResource::collection($popular),
+            'new' => ExperienceResource::collection($new),
         ];
         return response()->json($result);
     }
