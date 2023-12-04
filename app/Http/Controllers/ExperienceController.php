@@ -103,7 +103,7 @@ class ExperienceController extends Controller
      */
     public function ownExperience()
     {
-        $experiences = auth()->user()->experiences;
+        $experiences = Experience::query()->where('user_id',auth()->id())->orderBy('created_at')->get();
         return response()->json(ExperienceResource::collection($experiences->loadCount('comments')->loadCount('userFavorites')));
     }
 

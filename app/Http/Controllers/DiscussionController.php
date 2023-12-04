@@ -139,7 +139,7 @@ class DiscussionController extends Controller
     public function ownDiscussion()
     {
         $discussions = auth()->user()->discussions;
-        return response()->json(new DiscussionResource($discussions->loadCount('comments')->loadCount('userFavorites')));
+        return response()->json(DiscussionResource::collection($discussions->loadCount('comments')->loadCount('userFavorites')));
     }
 
     public function popularTag()
