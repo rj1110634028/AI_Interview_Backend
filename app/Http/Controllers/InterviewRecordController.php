@@ -41,12 +41,13 @@ class InterviewRecordController extends Controller
         $questions = array();
         foreach ($all_questions as $row) {
             if (in_array($row['type'], ['basic', 'start'])) {
-                array_push($questions, $row['data'][array_rand($row['data'])]);
+                // array_push($questions, $row['data'][array_rand($row['data'])]);
             }
             if ($row['type'] == $type) {
-                foreach (array_rand($row['data'], 3) as $value) {
-                    array_push($questions, $row['data'][$value]);
-                }
+                // foreach (array_rand($row['data'], 3) as $value) {
+                //     array_push($questions, $row['data'][$value]);
+                // }
+                array_push($questions, $row['data'][array_rand($row['data'])]);
             }
         }
         foreach ($questions as $question) {
