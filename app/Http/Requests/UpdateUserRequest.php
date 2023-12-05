@@ -25,11 +25,11 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            "name" => ['nullable', 'string'],
+            "name" => ['filled', 'string'],
             "phone" => ['nullable', 'string', 'regex:/^09[\d]{8}$/'],
-            "email" => ['nullable', 'string'],
+            "email" => ['filled', 'string'],
             "address" => ['nullable', 'string'],
-            "sex" => ['nullable', Rule::in(['F', 'M'])],
+            "sex" => ['filled', Rule::in(['F', 'M'])],
             "birthday" => ['nullable', 'date'],
             "educational_status" => ['nullable', 'string'],
             "employment_status" => ['nullable', 'string'],
